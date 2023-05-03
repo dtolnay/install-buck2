@@ -19,7 +19,7 @@ runs:
         echo filename=${{runner.os == 'Windows' && 'buck2.exe' || 'buck2'}} >> $GITHUB_OUTPUT
       shell: bash
 
-    - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}.zst --output ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst
+    - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}.zst --output ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst --location
       shell: bash
 
     - run: zstd -d ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst -o /usr/local/bin/${{steps.configure.outputs.filename}}
