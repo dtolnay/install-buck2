@@ -14,20 +14,20 @@ runs:
         echo filename=${{runner.os == 'Windows' && 'buck2.exe' || 'buck2'}} >> $GITHUB_OUTPUT
       shell: bash
 
-    - run: mkdir -p ${{runner.temp}}/install-buck2
-      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
+    - run: mkdir -p "${{runner.temp}}/install-buck2"
+      shell: bash
 
-    - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}.zst --output ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst --location --silent --show-error --fail --retry 5
-      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
+    - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}.zst --output "${{runner.temp}}/${{steps.configure.outputs.filename}}.zst" --location --silent --show-error --fail --retry 5
+      shell: bash
 
-    - run: zstd -d ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst -o ${{runner.temp}}/install-buck2/${{steps.configure.outputs.filename}}
-      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
+    - run: zstd -d "${{runner.temp}}/${{steps.configure.outputs.filename}}.zst" -o "${{runner.temp}}/install-buck2/${{steps.configure.outputs.filename}}"
+      shell: bash
 
-    - run: chmod +x ${{runner.temp}}/install-buck2/${{steps.configure.outputs.filename}}
-      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
+    - run: chmod +x "${{runner.temp}}/install-buck2/${{steps.configure.outputs.filename}}"
+      shell: bash
 
-    - run: echo ${{runner.temp}}/install-buck2 >> $GITHUB_PATH
-      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
+    - run: echo "${{runner.temp}}/install-buck2" >> $GITHUB_PATH
+      shell: bash
 
     - run: buck2 --version
-      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
+      shell: bash
