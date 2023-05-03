@@ -12,16 +12,21 @@ runs:
       run: |
         echo platform=${{runner.os == 'macOS' && 'x86_64-apple-darwin' || runner.os == 'Windows' && 'x86_64-pc-windows-msvc.exe' || 'x86_64-unknown-linux-gnu'}} >> $GITHUB_OUTPUT
         echo filename=${{runner.os == 'Windows' && 'buck2.exe' || 'buck2'}} >> $GITHUB_OUTPUT
-        echo install=${{runner.os == 'Windows' && 'C:\\bin' || '/usr/local/bin'}} >> $GITHUB_OUTPUT
       shell: bash
+
+    - run: mkdir -p ${{runner.temp}}/install-buck2
+      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
 
     - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}.zst --output ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst --location --silent --show-error --fail --retry 5
       shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
 
-    - run: zstd -d ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst -o ${{steps.configure.outputs.install}}/${{steps.configure.outputs.filename}}
+    - run: zstd -d ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst -o ${{runner.temp}}/install-buck2/${{steps.configure.outputs.filename}}
       shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
 
-    - run: chmod +x ${{steps.configure.outputs.install}}/${{steps.configure.outputs.filename}}
+    - run: chmod +x ${{runner.temp}}/install-buck2/${{steps.configure.outputs.filename}}
+      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
+
+    - run: echo ${{runner.temp}}/install-buck2 >> $GITHUB_PATH
       shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
 
     - run: buck2 --version
