@@ -29,5 +29,9 @@ runs:
     - run: echo "${{runner.temp}}/install-buck2/bin" >> $GITHUB_PATH
       shell: bash
 
+    - run: sudo apt-get install lld
+      if: runner.os == 'Linux'
+      shell: bash
+
     - run: buck2 --version
       shell: bash
