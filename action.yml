@@ -1,0 +1,34 @@
+name: install Buck2
+author: David Tolnay
+description: Prebuilt binaries of https://buck2.build
+branding:
+  icon: activity
+  color: purple
+
+runs:
+  using: composite
+  steps:
+    - run: pwd # FIXME
+      shell: bash
+    - run: echo "$PATH" # FIXME
+      shell: bash
+
+    - id: configure
+      run: |
+        echo platform=${{runner.os == 'macOS' && 'x86_64-apple-darwin' || runner.os == 'Windows' && 'x86_64-pc-windows-msvc.exe' || 'x86_64-unknown-linux-gnu'}} >> $GITHUB_OUTPUT
+        echo filename=${{runner.os == 'Windows' && 'buck2.exe' || 'buck2'}} >> $GITHUB_OUTPUT
+      shell: bash
+
+    - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}.zst --output ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst
+      shell: bash
+
+    - run: zstd -d ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst -o /usr/local/bin/${{steps.configure.outputs.filename}}
+      shell: bash
+
+    - run: chmod +x /usr/local/bin/${{steps.configure.outputs.filename}}
+      shell: bash
+
+    # FIXME: echo /usr/local/bin >> $GITHUB_PATH
+
+    - run: buck2 --version
+      shell: bash
