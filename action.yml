@@ -15,13 +15,13 @@ runs:
       shell: bash
 
     - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}.zst --output ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst --location --silent --show-error --fail --retry 5
-      shell: bash
+      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
 
     - run: zstd -d ${{runner.temp}}/${{steps.configure.outputs.filename}}.zst -o /usr/local/bin/${{steps.configure.outputs.filename}}
-      shell: bash
+      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
 
     - run: chmod +x /usr/local/bin/${{steps.configure.outputs.filename}}
-      shell: bash
+      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
 
     - run: buck2 --version
-      shell: bash
+      shell: ${{runner.os == 'Windows' && 'pwsh' || 'bash'}}
