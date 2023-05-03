@@ -8,11 +8,6 @@ branding:
 runs:
   using: composite
   steps:
-    - run: pwd # FIXME
-      shell: bash
-    - run: echo "$PATH" # FIXME
-      shell: bash
-
     - id: configure
       run: |
         echo platform=${{runner.os == 'macOS' && 'x86_64-apple-darwin' || runner.os == 'Windows' && 'x86_64-pc-windows-msvc.exe' || 'x86_64-unknown-linux-gnu'}} >> $GITHUB_OUTPUT
@@ -27,8 +22,6 @@ runs:
 
     - run: chmod +x /usr/local/bin/${{steps.configure.outputs.filename}}
       shell: bash
-
-    # FIXME: echo /usr/local/bin >> $GITHUB_PATH
 
     - run: buck2 --version
       shell: bash
