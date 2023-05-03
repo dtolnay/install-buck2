@@ -20,7 +20,8 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v3
-      - run: "!" buck2 --version
+      - run: if buck2 --version; then which buck2; exit 1; fi
+        shell: bash
         name: test that buck2 is not preinstalled
       - uses: ./
       - run: buck2 --version
