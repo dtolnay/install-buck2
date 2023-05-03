@@ -1,5 +1,7 @@
 # GitHub Action to install Buck2
 
+[<img alt="build status" src="https://img.shields.io/github/actions/workflow/status/dtolnay/install-buck2/ci.yml?branch=latest&style=for-the-badge" height="20">](https://github.com/dtolnay/install-buck2/actions?query=branch%3Alatest)
+
 This GitHub Action installs a precompiled `buck2` binary from
 <https://github.com/facebook/buck2/releases/tag/latest>.
 
