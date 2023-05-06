@@ -15,5 +15,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/install-buck2@latest
-      - run: buck2 build //...
+      - run: buck build //...
 ```
