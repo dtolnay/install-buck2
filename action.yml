@@ -10,24 +10,23 @@ runs:
   steps:
     - id: configure
       run: |
-        echo platform=${{runner.os == 'macOS' && 'x86_64-apple-darwin' || runner.os == 'Windows' && 'x86_64-pc-windows-msvc.exe' || 'x86_64-unknown-linux-gnu'}} >> $GITHUB_OUTPUT
-        echo filename=${{runner.os == 'Windows' && 'buck.exe' || 'buck'}} >> $GITHUB_OUTPUT
-        echo filename2=${{runner.os == 'Windows' && 'buck2.exe' || 'buck2'}} >> $GITHUB_OUTPUT
+        echo platform=${{runner.os == 'macOS' && 'x86_64-apple-darwin' || runner.os == 'Windows' && 'x86_64-pc-windows-msvc' || 'x86_64-unknown-linux-gnu'}} >> $GITHUB_OUTPUT
+        echo extension=${{runner.os == 'Windows' && '.exe' || ''}} >> $GITHUB_OUTPUT
       shell: bash
 
     - run: mkdir -p "${{runner.temp}}/install-buck2/bin"
       shell: bash
 
-    - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}.zst --output "${{runner.temp}}/install-buck2/${{steps.configure.outputs.filename2}}.zst" --location --silent --show-error --fail --retry 5
+    - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}${{steps.configure.outputs.extension}}.zst --output "${{runner.temp}}/install-buck2/buck2${{steps.configure.outputs.extension}}.zst" --location --silent --show-error --fail --retry 5
       shell: bash
 
-    - run: zstd -d "${{runner.temp}}/install-buck2/${{steps.configure.outputs.filename2}}.zst" -o "${{runner.temp}}/install-buck2/bin/${{steps.configure.outputs.filename2}}"
+    - run: zstd -d "${{runner.temp}}/install-buck2/buck2${{steps.configure.outputs.extension}}.zst" -o "${{runner.temp}}/install-buck2/bin/buck2${{steps.configure.outputs.extension}}"
       shell: bash
 
-    - run: chmod +x "${{runner.temp}}/install-buck2/bin/${{steps.configure.outputs.filename2}}"
+    - run: chmod +x "${{runner.temp}}/install-buck2/bin/buck2${{steps.configure.outputs.extension}}"
       shell: bash
 
-    - run: ln -s "${{runner.temp}}/install-buck2/bin/${{steps.configure.outputs.filename2}}" "${{runner.temp}}/install-buck2/bin/${{steps.configure.outputs.filename}}"
+    - run: ln -s "${{runner.temp}}/install-buck2/bin/buck2${{steps.configure.outputs.extension}}" "${{runner.temp}}/install-buck2/bin/buck${{steps.configure.outputs.extension}}"
       shell: bash
 
     - run: echo "${{runner.temp}}/install-buck2/bin" >> $GITHUB_PATH
