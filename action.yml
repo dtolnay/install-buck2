@@ -5,6 +5,11 @@ branding:
   icon: activity
   color: purple
 
+outputs:
+  prelude-hash:
+    description:
+    value: ${{steps.prelude-hash.outputs.prelude-hash}}
+
 runs:
   using: composite
   steps:
@@ -18,6 +23,10 @@ runs:
       shell: bash
 
     - run: curl https://github.com/facebook/buck2/releases/download/latest/buck2-${{steps.configure.outputs.platform}}${{steps.configure.outputs.extension}}.zst --output "${{runner.temp}}/install-buck2/buck2${{steps.configure.outputs.extension}}.zst" --location --silent --show-error --fail --retry 5
+      shell: bash
+
+    - id: prelude-hash
+      run: curl https://github.com/facebook/buck2/releases/download/latest/prelude_hash --location --silent --show-error --fail --retry 5 | sed 's/^/prelude-hash=/' >> $GITHUB_OUTPUT
       shell: bash
 
     - run: zstd -d "${{runner.temp}}/install-buck2/buck2${{steps.configure.outputs.extension}}.zst" -o "${{runner.temp}}/install-buck2/bin/buck2${{steps.configure.outputs.extension}}"
@@ -37,4 +46,7 @@ runs:
       shell: bash
 
     - run: buck2 --version
+      shell: bash
+
+    - run: echo prelude-hash=${{steps.prelude-hash.outputs.prelude-hash}}
       shell: bash
