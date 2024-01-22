@@ -25,5 +25,11 @@ jobs:
           if buck --version; then which buck; exit 1; fi
         shell: bash
         name: test that buck2 is not preinstalled
-      - uses: ./
+      - id: install-buck2
+        uses: ./
       - run: buck --version
+      - name: checkout prelude
+        run: |
+          git submodule add https://github.com/facebook/buck2-prelude
+          git submodule update --init --remote --single-branch buck2-prelude
+          cd buck2-prelude && git checkout "${{steps.install-buck2.outputs.prelude-hash}}"
