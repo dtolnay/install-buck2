@@ -50,7 +50,11 @@ runs:
       if: inputs.prelude-submodule != ''
       shell: bash
 
-    - run: git submodule status -- "${{inputs.prelude-submodule}}" || (rmdir -- "${{inputs.prelude-submodule}}" && git submodule add -- https://github.com/facebook/buck2-prelude "${{inputs.prelude-submodule}}")
+    - run: |
+        if ! git submodule status -- "${{inputs.prelude-submodule}}"; then
+          rmdir -- "${{inputs.prelude-submodule}}"
+          git submodule add -- https://github.com/facebook/buck2-prelude "${{inputs.prelude-submodule}}"
+        fi
       if: inputs.prelude-submodule != ''
       shell: bash
 
