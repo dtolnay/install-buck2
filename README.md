@@ -17,3 +17,42 @@ jobs:
       - uses: dtolnay/install-buck2@latest
       - run: buck build //...
 ```
+
+## Inputs
+
+<table>
+<tr>
+  <th>Name</th>
+  <th>Description</th>
+</tr>
+<tr>
+  <td><code>prelude-submodule</code></td>
+  <td>
+    Optional. Relative path at which to checkout the
+    <a href="https://github.com/facebook/buck2-prelude">buck2-prelude</a>
+    repo as a submodule at the correct commit matching the installed buck2
+    executable.
+  </td>
+</tr>
+</table>
+
+<br>
+
+## Outputs
+
+<table>
+<tr>
+  <th>Name</th>
+  <th>Description</th>
+</tr>
+<tr>
+  <td><code>prelude-hash</code></td>
+  <td>
+    Commit hash of the
+    <a href="https://github.com/facebook/buck2-prelude">buck2-prelude</a>
+    repo that matches the installed buck2 executable.
+  </td>
+</tr>
+</table>
+
+<br>
