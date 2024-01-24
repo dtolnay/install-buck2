@@ -26,7 +26,7 @@ jobs:
   <th>Description</th>
 </tr>
 <tr>
-  <td><code>prelude-submodule</code></td>
+  <td><pre>prelude-submodule</pre></td>
   <td>
     Optional. Relative path at which to checkout the
     <a href="https://github.com/facebook/buck2-prelude">buck2-prelude</a>
@@ -44,7 +44,7 @@ jobs:
   <th>Description</th>
 </tr>
 <tr>
-  <td><code>prelude-hash</code></td>
+  <td><pre>prelude-hash</pre></td>
   <td>
     Commit hash of the
     <a href="https://github.com/facebook/buck2-prelude">buck2-prelude</a>
