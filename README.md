@@ -36,8 +36,6 @@ jobs:
 </tr>
 </table>
 
-<br>
-
 ## Outputs
 
 <table>
@@ -54,5 +52,3 @@ jobs:
   </td>
 </tr>
 </table>
-
-<br>
