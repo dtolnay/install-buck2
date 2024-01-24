@@ -5,6 +5,11 @@ branding:
   icon: activity
   color: purple
 
+inputs:
+  prelude-submodule:
+    description: Path to checkout https://github.com/facebook/buck2-prelude as a submodule
+    required: false
+
 outputs:
   prelude-hash:
     description:
@@ -39,6 +44,23 @@ runs:
       shell: bash
 
     - run: echo "${{runner.temp}}/install-buck2/bin" >> $GITHUB_PATH
+      shell: bash
+
+    - run: mkdir -p -- "${{inputs.prelude-submodule}}"
+      if: inputs.prelude-submodule != ''
+      shell: bash
+
+    - run: git submodule status -- "${{inputs.prelude-submodule}}" || rmdir -- "${{inputs.prelude-submodule}}" && git submodule add -- https://github.com/facebook/buck2-prelude "${{inputs.prelude-submodule}}"
+      if: inputs.prelude-submodule != ''
+      shell: bash
+
+    - run: git submodule update --init --remote -- "${{inputs.prelude-submodule}}"
+      if: inputs.prelude-submodule != ''
+      shell: bash
+
+    - run: git checkout "${{steps.prelude-hash.outputs.prelude-hash}}"
+      working-directory: ${{inputs.prelude-submodule}}
+      if: inputs.prelude-submodule != ''
       shell: bash
 
     - run: sudo apt-get install lld

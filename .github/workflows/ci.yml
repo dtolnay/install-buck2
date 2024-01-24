@@ -27,9 +27,7 @@ jobs:
         name: test that buck2 is not preinstalled
       - id: install-buck2
         uses: ./
+        with:
+          prelude-submodule: tools/buck/prelude
       - run: buck --version
-      - name: checkout prelude
-        run: |
-          git submodule add https://github.com/facebook/buck2-prelude
-          git submodule update --init --remote --single-branch buck2-prelude
-          cd buck2-prelude && git checkout "${{steps.install-buck2.outputs.prelude-hash}}"
+      - run: ls tools/buck/prelude
