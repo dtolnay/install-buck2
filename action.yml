@@ -50,12 +50,27 @@ runs:
       if: inputs.prelude-submodule != ''
       shell: bash
 
-    - run: |
-        if ! git submodule status -- "${{inputs.prelude-submodule}}" &>/dev/null; then
-          rmdir -- "${{inputs.prelude-submodule}}"
-          git submodule add -- https://github.com/facebook/buck2-prelude "${{inputs.prelude-submodule}}"
+    - id: uninitialized-submodule
+      run: |
+        if git submodule status | grep -q ' \./$'; then
+          echo is-submodule=true >> $GITHUB_OUTPUT
         fi
+      working-directory: ${{inputs.prelude-submodule}}
       if: inputs.prelude-submodule != ''
+      shell: bash
+
+    - id: initialized-submodule
+      run: |
+        if ! diff -q <(cd -- "${{inputs.prelude-submodule}}"; git rev-parse --git-dir) <(cd -- "${{inputs.prelude-submodule}}"/..; git rev-parse --git-dir) >/dev/null; then
+          echo is-submodule=true >> $GITHUB_OUTPUT
+        fi
+      if: inputs.prelude-submodule != '' && !steps.uninitialized-submodule.outputs.is-submodule
+      shell: bash
+
+    - run: |
+        rmdir -- "${{inputs.prelude-submodule}}"
+        git submodule add -- https://github.com/facebook/buck2-prelude "${{inputs.prelude-submodule}}"
+      if: inputs.prelude-submodule != '' && !steps.uninitialized-submodule.outputs.is-submodule && !steps.initialized-submodule.outputs.is-submodule
       shell: bash
 
     - run: git submodule update --init --remote -- "${{inputs.prelude-submodule}}"
