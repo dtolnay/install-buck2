@@ -67,9 +67,11 @@ runs:
       if: inputs.prelude-submodule != '' && !steps.uninitialized-submodule.outputs.is-submodule
       shell: bash
 
-    - run: |
-        rmdir -- "${{inputs.prelude-submodule}}"
-        git submodule add -- https://github.com/facebook/buck2-prelude "${{inputs.prelude-submodule}}"
+    - run: rmdir -- "${{inputs.prelude-submodule}}"
+      if: inputs.prelude-submodule != '' && !steps.uninitialized-submodule.outputs.is-submodule && !steps.initialized-submodule.outputs.is-submodule
+      shell: bash
+
+    - run: git submodule add -- https://github.com/facebook/buck2-prelude "${{inputs.prelude-submodule}}"
       if: inputs.prelude-submodule != '' && !steps.uninitialized-submodule.outputs.is-submodule && !steps.initialized-submodule.outputs.is-submodule
       shell: bash
 
