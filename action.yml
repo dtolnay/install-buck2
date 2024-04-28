@@ -20,7 +20,7 @@ runs:
   steps:
     - id: configure
       run: |
-        echo platform=${{runner.os == 'macOS' && 'x86_64-apple-darwin' || runner.os == 'Windows' && 'x86_64-pc-windows-msvc' || 'x86_64-unknown-linux-gnu'}} >> $GITHUB_OUTPUT
+        echo platform=${{runner.os == 'macOS' && (runner.arch == 'ARM64' && 'aarch64-apple-darwin' || 'x86_64-apple-darwin') || runner.os == 'Windows' && 'x86_64-pc-windows-msvc' || runner.arch == 'ARM64' && 'aarch64-unknown-linux-gnu' || 'x86_64-unknown-linux-gnu'}} >> $GITHUB_OUTPUT
         echo extension=${{runner.os == 'Windows' && '.exe' || ''}} >> $GITHUB_OUTPUT
       shell: bash
 
