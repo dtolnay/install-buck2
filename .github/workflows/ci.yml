@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu, macos, windows]
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: |
           if buck2 --version; then which buck2; exit 1; fi
           if buck --version; then which buck; exit 1; fi
