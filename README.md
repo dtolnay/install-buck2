@@ -34,6 +34,14 @@ jobs:
     executable.
   </td>
 </tr>
+<tr>
+  <td><pre>release</pre></td>
+  <td>
+    Optional. Release tag of the
+    <a href="https://github.com/facebook/buck2">buck2</a>
+    repo to install.
+  </td>
+</tr>
 </table>
 
 ## Outputs
