@@ -85,7 +85,6 @@ runs:
       shell: bash
 
     - run: |
-        sudo sed -i 's/^update_initramfs=yes$/update_initramfs=no/' /etc/initramfs-tools/update-initramfs.conf
         sudo rm -f /var/lib/man-db/auto-update
         sudo apt-get install lld
       if: runner.os == 'Linux'
